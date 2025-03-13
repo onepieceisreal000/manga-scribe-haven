@@ -83,6 +83,18 @@
   @apply bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-xl font-medium py-3 px-6 shadow-md hover:shadow-lg transition-all;
 }
 
+/* Text gradient - useful for headings */
+.text-gradient {
+  @apply bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent;
+}
+
+/* Neo glass effect - more premium than the standard backdrop-blur */
+.neo-glass {
+  @apply backdrop-blur-lg bg-white/5 border border-white/10 shadow-lg;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3), 
+              0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
 /* Manga card animations and styling */
 .manga-card {
   @apply transition-all duration-300 ease-in-out bg-manga-primary rounded-xl overflow-hidden shadow-lg hover:shadow-xl backdrop-blur-lg bg-opacity-80;
@@ -113,122 +125,53 @@
 }
 
 @layer utilities {
-  .scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .scrollbar::-webkit-scrollbar-track {
-    @apply bg-manga-primary/50 rounded-full;
-  }
-
-  .scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-manga-accent/70 rounded-full;
-  }
-
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-manga-accent;
-  }
-
-  .glass-card {
-    @apply bg-manga-primary/70 backdrop-blur-lg border border-white/10 rounded-xl;
-  }
-
-  .neo-glass {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl shadow-lg;
-  }
-
-  .page-transition {
-    @apply animate-fade-in;
+  /* ... keep existing code (scrollbar, glass-card, neo-glass styles etc.) */
+  
+  /* Patreon-like fluidity effects */
+  .fluidity-hover {
+    @apply transition-all duration-500 ease-in-out hover:shadow-lg;
+    transform-origin: center bottom;
   }
   
-  /* iOS-like gradient effects */
-  .ios-gradient {
-    @apply bg-gradient-to-br from-blue-500/90 to-indigo-600/90;
+  .fluidity-hover:hover {
+    transform: translateY(-5px) scale(1.02);
   }
   
-  .ios-gradient-subtle {
-    @apply bg-gradient-to-br from-gray-900/90 to-gray-800/80;
+  /* Subtle glow effects for premium buttons */
+  .premium-glow {
+    box-shadow: 0 0 15px rgba(79, 70, 229, 0.3),
+                0 0 5px rgba(79, 70, 229, 0.2);
   }
   
-  /* Adding depth to UI elements */
-  .depth-effect {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
-                0 4px 6px -2px rgba(0, 0, 0, 0.05),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  .premium-glow:hover {
+    box-shadow: 0 0 25px rgba(79, 70, 229, 0.4),
+                0 0 10px rgba(79, 70, 229, 0.3);
+  }
+  
+  /* Gradient borders for extra premium feel */
+  .gradient-border {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(to bottom right, #4f46e5, #818cf8);
+    -webkit-mask: 
+       linear-gradient(#fff 0 0) content-box, 
+       linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }
 
-/* Button hover effect */
-.btn-primary {
-  @apply relative overflow-hidden transition-all duration-300;
-}
-
-.btn-primary::after {
-  content: '';
-  @apply absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300;
-}
-
-.btn-primary:hover::after {
-  @apply w-full;
-}
-
-/* Page transitions */
-.page-enter {
-  @apply opacity-0;
-}
-
-.page-enter-active {
-  @apply opacity-100 transition-opacity duration-300;
-}
-
-.page-exit {
-  @apply opacity-100;
-}
-
-.page-exit-active {
-  @apply opacity-0 transition-opacity duration-300;
-}
-
-/* App.css styles */
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
+/* ... keep existing code (rest of the CSS) */
