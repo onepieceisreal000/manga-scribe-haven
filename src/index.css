@@ -121,11 +121,33 @@
 .chapter-list {
   max-height: 500px;
   overflow-y: auto;
-  @apply scrollbar;
+  @apply custom-scrollbar;
 }
 
 @layer utilities {
-  /* ... keep existing code (scrollbar, glass-card, neo-glass styles etc.) */
+  /* Custom scrollbar styling */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
   
   /* Patreon-like fluidity effects */
   .fluidity-hover {
@@ -173,5 +195,3 @@
     pointer-events: none;
   }
 }
-
-/* ... keep existing code (rest of the CSS) */
