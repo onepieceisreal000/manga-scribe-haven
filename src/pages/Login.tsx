@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, LockKeyhole } from 'lucide-react';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -36,19 +36,24 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-manga-secondary px-4">
-      <div className="w-full max-w-md">
-        <Card className="bg-manga-primary border-gray-800">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">Admin Login</CardTitle>
-            <CardDescription className="text-center">
+    <div className="min-h-screen flex items-center justify-center bg-manga-secondary px-4 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-manga-primary to-manga-secondary">
+      <div className="w-full max-w-md animate-scale-in">
+        <Card className="glass-card border-gray-800 shadow-xl">
+          <CardHeader className="space-y-2">
+            <div className="flex justify-center mb-2">
+              <div className="w-12 h-12 rounded-full bg-manga-accent/20 flex items-center justify-center">
+                <LockKeyhole className="h-6 w-6 text-manga-accent" />
+              </div>
+            </div>
+            <CardTitle className="text-2xl font-display font-bold text-center">Admin Login</CardTitle>
+            <CardDescription className="text-center font-manga">
               Enter your credentials to access the admin dashboard
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username" className="font-manga">Username</Label>
                 <Input
                   id="username"
                   type="text"
@@ -56,11 +61,11 @@ const Login = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="bg-manga-secondary border-gray-700"
+                  className="bg-manga-secondary/80 border-gray-700 transition-all duration-300 focus:border-manga-accent"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="font-manga">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -68,10 +73,10 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-manga-secondary border-gray-700"
+                  className="bg-manga-secondary/80 border-gray-700 transition-all duration-300 focus:border-manga-accent"
                 />
               </div>
-              <div className="text-sm text-gray-400 italic">
+              <div className="text-sm text-gray-400 italic font-manga">
                 <p>Default credentials:</p>
                 <p>Username: admin</p>
                 <p>Password: admin123</p>
@@ -80,7 +85,7 @@ const Login = () => {
             <CardFooter>
               <Button 
                 type="submit" 
-                className="w-full" 
+                className="w-full bg-manga-accent hover:bg-manga-accent/90 transition-all duration-300"
                 disabled={isSubmitting || !username || !password}
               >
                 {isSubmitting ? (

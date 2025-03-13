@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowUp, ArrowDown, Plus, Trash2, GripVertical } from "lucide-react";
+import { ArrowUp, ArrowDown, Plus, Trash2, GripVertical, Image as ImageIcon } from "lucide-react";
 import ImageUploader from "./ImageUploader";
 
 interface PageUploaderProps {
@@ -44,9 +44,9 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 animate-fade-in">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Chapter Pages</h3>
+        <h3 className="text-xl font-display font-medium">Chapter Pages</h3>
         <Button
           size="sm"
           onClick={() => {
@@ -54,6 +54,7 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
             if (onUploadStateChange) onUploadStateChange(true);
           }}
           disabled={showUploader}
+          className="bg-manga-accent hover:bg-manga-accent/90 transition-all duration-300"
         >
           <Plus size={16} className="mr-2" />
           Add Page
@@ -61,8 +62,8 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
       </div>
 
       {showUploader && (
-        <div className="bg-manga-primary p-4 rounded-md border border-gray-700">
-          <h4 className="font-medium mb-3">Add New Page</h4>
+        <div className="glass-card p-5 rounded-md border border-gray-700 animate-scale-in">
+          <h4 className="font-medium mb-3 font-display">Add New Page</h4>
           <ImageUploader onImageSelected={addPage} />
           <Button 
             variant="outline" 
@@ -71,7 +72,7 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
               setShowUploader(false);
               if (onUploadStateChange) onUploadStateChange(false);
             }}
-            className="mt-3"
+            className="mt-3 transition-all duration-300"
           >
             Cancel
           </Button>
@@ -79,32 +80,32 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
       )}
 
       {pages.length > 0 ? (
-        <ScrollArea className="h-[400px] border border-gray-700 rounded-md p-2">
+        <ScrollArea className="h-[400px] border border-gray-700 rounded-md p-2 scrollbar">
           <div className="space-y-3">
             {pages.map((page, index) => (
               <div 
                 key={index} 
-                className="flex items-center p-2 bg-manga-primary rounded-md border border-gray-700"
+                className="flex items-center p-3 glass-card rounded-md border border-gray-700 transition-all hover:border-manga-accent/50 duration-300"
               >
                 <GripVertical size={16} className="mr-2 text-gray-500" />
-                <div className="w-16 h-16 relative overflow-hidden rounded-md mr-3">
+                <div className="w-16 h-16 relative overflow-hidden rounded-md mr-3 border border-gray-700">
                   <img 
                     src={page} 
                     alt={`Page ${index + 1}`} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/placeholder.svg";
                     }}
                   />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium">Page {index + 1}</p>
+                  <p className="text-sm font-medium font-manga">Page {index + 1}</p>
                 </div>
                 <div className="flex space-x-1">
                   <Button 
                     size="icon" 
                     variant="outline" 
-                    className="h-8 w-8"
+                    className="h-8 w-8 transition-colors duration-300 hover:border-manga-accent/50"
                     onClick={() => movePage(index, 'up')}
                     disabled={index === 0}
                   >
@@ -113,7 +114,7 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
                   <Button 
                     size="icon" 
                     variant="outline" 
-                    className="h-8 w-8"
+                    className="h-8 w-8 transition-colors duration-300 hover:border-manga-accent/50"
                     onClick={() => movePage(index, 'down')}
                     disabled={index === pages.length - 1}
                   >
@@ -122,7 +123,7 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
                   <Button 
                     size="icon" 
                     variant="destructive" 
-                    className="h-8 w-8"
+                    className="h-8 w-8 transition-colors duration-300"
                     onClick={() => removePage(index)}
                   >
                     <Trash2 size={14} />
@@ -133,8 +134,9 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
           </div>
         </ScrollArea>
       ) : (
-        <div className="py-8 text-center border border-dashed border-gray-700 rounded-md">
-          <p className="text-gray-400">No pages added yet. Add pages to create a chapter.</p>
+        <div className="py-10 text-center border border-dashed border-gray-700 rounded-md animate-fade-in">
+          <ImageIcon className="h-12 w-12 mx-auto text-gray-500 mb-4" />
+          <p className="text-gray-400 font-manga">No pages added yet. Add pages to create a chapter.</p>
         </div>
       )}
     </div>
