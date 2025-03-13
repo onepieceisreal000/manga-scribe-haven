@@ -67,81 +67,81 @@ const CreateManga = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Create New Manga</h1>
+      <div className="space-y-8 animate-fade-in">
+        <div className="neo-glass p-6 rounded-2xl">
+          <h1 className="text-3xl font-bold text-gradient">Create New Manga</h1>
           <p className="text-gray-400">Add a new manga to your library</p>
         </div>
         
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="md:col-span-2 space-y-6 neo-glass p-8 rounded-2xl">
               <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="title" className="text-gray-300">Title</Label>
                 <Input
                   id="title"
                   placeholder="Enter manga title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="bg-manga-primary border-gray-700"
+                  className="premium-input"
                   required
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="author">Author</Label>
+                <Label htmlFor="author" className="text-gray-300">Author</Label>
                 <Input
                   id="author"
                   placeholder="Enter author name"
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
-                  className="bg-manga-primary border-gray-700"
+                  className="premium-input"
                   required
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description" className="text-gray-300">Description</Label>
                 <Textarea
                   id="description"
                   placeholder="Enter manga description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="min-h-[120px] bg-manga-primary border-gray-700"
+                  className="min-h-[120px] premium-input"
                   required
                 />
               </div>
               
-              <div className="space-y-2">
-                <Label>Status</Label>
+              <div className="space-y-3">
+                <Label className="text-gray-300">Status</Label>
                 <RadioGroup 
                   value={status} 
                   onValueChange={(value) => setStatus(value as 'ongoing' | 'completed')}
-                  className="flex space-x-4"
+                  className="flex space-x-6"
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="ongoing" id="ongoing" />
-                    <Label htmlFor="ongoing" className="cursor-pointer">Ongoing</Label>
+                    <Label htmlFor="ongoing" className="cursor-pointer text-gray-300">Ongoing</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="completed" id="completed" />
-                    <Label htmlFor="completed" className="cursor-pointer">Completed</Label>
+                    <Label htmlFor="completed" className="cursor-pointer text-gray-300">Completed</Label>
                   </div>
                 </RadioGroup>
               </div>
               
-              <div className="space-y-2">
-                <Label>Genres (select up to 5)</Label>
-                <ScrollArea className="h-[120px] border border-gray-700 rounded-md p-3 bg-manga-primary">
+              <div className="space-y-3">
+                <Label className="text-gray-300">Genres (select up to 5)</Label>
+                <ScrollArea className="h-[120px] neo-glass p-4 rounded-xl custom-scrollbar">
                   <div className="flex flex-wrap gap-2">
                     {GENRE_OPTIONS.map((genre) => (
                       <Badge
                         key={genre}
                         variant={selectedGenres.includes(genre) ? "default" : "outline"}
-                        className={`cursor-pointer ${
+                        className={`cursor-pointer transition-all ${
                           selectedGenres.includes(genre) 
-                            ? "bg-blue-600 hover:bg-blue-700" 
-                            : "hover:bg-manga-secondary"
+                            ? "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700" 
+                            : "hover:bg-white/10"
                         }`}
                         onClick={() => toggleGenre(genre)}
                       >
@@ -158,11 +158,11 @@ const CreateManga = () => {
               </div>
             </div>
             
-            <div className="space-y-2">
-              <Label>Cover Image</Label>
+            <div className="space-y-4 neo-glass p-8 rounded-2xl">
+              <Label className="text-gray-300">Cover Image</Label>
               <ImageUploader 
                 onImageSelected={setCoverImage} 
-                className="bg-manga-primary border border-gray-700 rounded-md p-4"
+                className="bg-manga-primary/30 border border-white/10 rounded-xl p-4"
               />
               <p className="text-xs text-gray-400 mt-2">
                 Upload a cover image for your manga or provide a URL.
@@ -176,12 +176,14 @@ const CreateManga = () => {
               variant="outline" 
               onClick={() => navigate('/admin/manga')}
               disabled={isSubmitting}
+              className="border-white/20 bg-white/5 hover:bg-white/10"
             >
               Cancel
             </Button>
             <Button 
               type="submit" 
               disabled={isSubmitting || !title || !description || !author || !coverImage || selectedGenres.length === 0}
+              className="premium-button premium-glow"
             >
               {isSubmitting ? (
                 <>
