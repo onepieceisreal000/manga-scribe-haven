@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 
@@ -32,6 +31,7 @@ interface MangaContextType {
   updateManga: (id: string, data: Partial<Manga>) => void;
   deleteManga: (id: string) => void;
   getManga: (id: string) => Manga | undefined;
+  getMangaById: (id: string) => Manga | undefined;
   addChapter: (mangaId: string, chapter: Omit<Chapter, 'id' | 'mangaId' | 'createdAt'>) => void;
   updateChapter: (mangaId: string, chapterId: string, data: Partial<Chapter>) => void;
   deleteChapter: (mangaId: string, chapterId: string) => void;
@@ -103,6 +103,10 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const getManga = (id: string) => {
+    return mangas.find(manga => manga.id === id);
+  };
+
+  const getMangaById = (id: string) => {
     return mangas.find(manga => manga.id === id);
   };
 
@@ -184,6 +188,7 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updateManga,
         deleteManga,
         getManga,
+        getMangaById,
         addChapter,
         updateChapter,
         deleteChapter,

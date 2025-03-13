@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { PageUploader } from "@/components/PageUploader";
+import PageUploader from "@/components/PageUploader"; // Fixed import statement
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -54,7 +54,7 @@ const CreateChapter = () => {
       const newChapter = {
         id: crypto.randomUUID(),
         title: data.title,
-        number: data.number,
+        number: parseInt(data.number, 10), // Convert string to number
         pages: pages,
         createdAt: new Date().toISOString(),
       };
@@ -173,7 +173,8 @@ const CreateChapter = () => {
                 Upload images for this chapter. The order matters - first image will be the first page.
               </p>
               <PageUploader 
-                onPageAdded={handleAddPage}
+                pages={pages}
+                onChange={setPages}
                 onUploadStateChange={setIsUploading}
               />
             </div>

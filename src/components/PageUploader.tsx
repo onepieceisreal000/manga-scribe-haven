@@ -8,15 +8,17 @@ import ImageUploader from "./ImageUploader";
 interface PageUploaderProps {
   pages: string[];
   onChange: (pages: string[]) => void;
+  onUploadStateChange?: (isUploading: boolean) => void;
 }
 
-const PageUploader = ({ pages, onChange }: PageUploaderProps) => {
+const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProps) => {
   const [showUploader, setShowUploader] = useState(false);
 
   const addPage = (imageUrl: string) => {
     if (imageUrl) {
       onChange([...pages, imageUrl]);
       setShowUploader(false);
+      if (onUploadStateChange) onUploadStateChange(false);
     }
   };
 
@@ -47,7 +49,10 @@ const PageUploader = ({ pages, onChange }: PageUploaderProps) => {
         <h3 className="text-lg font-medium">Chapter Pages</h3>
         <Button
           size="sm"
-          onClick={() => setShowUploader(true)}
+          onClick={() => {
+            setShowUploader(true);
+            if (onUploadStateChange) onUploadStateChange(true);
+          }}
           disabled={showUploader}
         >
           <Plus size={16} className="mr-2" />
@@ -62,7 +67,10 @@ const PageUploader = ({ pages, onChange }: PageUploaderProps) => {
           <Button 
             variant="outline" 
             size="sm" 
-            onClick={() => setShowUploader(false)}
+            onClick={() => {
+              setShowUploader(false);
+              if (onUploadStateChange) onUploadStateChange(false);
+            }}
             className="mt-3"
           >
             Cancel
