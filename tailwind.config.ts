@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,9 +19,10 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
-				display: ['"Playfair Display"', 'serif'],
-				manga: ['"Nunito Sans"', 'sans-serif']
+				sans: ['"SF Pro Display"', '"SF Pro"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Helvetica', 'sans-serif'],
+				display: ['"SF Pro Display"', '"SF Pro"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+				manga: ['"SF Pro Text"', '"SF Pro"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+				mono: ['"SF Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -127,6 +127,22 @@ export default {
 						transform: 'translateX(0)',
 						opacity: '1'
 					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0)'
+					},
+					'50%': {
+						transform: 'translateY(-5px)'
+					}
+				},
+				'pulse-soft': {
+					'0%, 100%': {
+						opacity: '1'
+					},
+					'50%': {
+						opacity: '0.8'
+					}
 				}
 			},
 			animation: {
@@ -134,7 +150,9 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.4s ease-out',
 				'scale-in': 'scale-in 0.3s ease-out',
-				'slide-in': 'slide-in 0.3s ease-out'
+				'slide-in': 'slide-in 0.3s ease-out',
+				'float': 'float 3s ease-in-out infinite',
+				'pulse-soft': 'pulse-soft 3s ease-in-out infinite'
 			}
 		}
 	},
