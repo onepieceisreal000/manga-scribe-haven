@@ -1,49 +1,10 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
-
-export interface Chapter {
-  id: string;
-  mangaId: string;
-  title: string;
-  number: number;
-  pages: string[]; // Array of image URLs
-  createdAt: string;
-}
-
-export interface Manga {
-  id: string;
-  title: string;
-  description: string;
-  author: string;
-  coverImage: string;
-  genres: string[];
-  status: 'ongoing' | 'completed';
-  isNsfw?: boolean; // New field for NSFW content
-  chapters: Chapter[];
-  createdAt: string;
-  updatedAt: string;
-  rating?: number;
-  views?: number;
-}
-
-interface MangaContextType {
-  mangas: Manga[];
-  addManga: (manga: Omit<Manga, 'id' | 'createdAt' | 'updatedAt' | 'chapters'>) => void;
-  updateManga: (id: string, data: Partial<Manga>) => void;
-  deleteManga: (id: string) => void;
-  getManga: (id: string) => Manga | undefined;
-  getMangaById: (id: string) => Manga | undefined;
-  addChapter: (mangaId: string, chapter: Omit<Chapter, 'id' | 'mangaId' | 'createdAt'>) => void;
-  updateChapter: (mangaId: string, chapterId: string, data: Partial<Chapter>) => void;
-  deleteChapter: (mangaId: string, chapterId: string) => void;
-  getChapter: (mangaId: string, chapterId: string) => Chapter | undefined;
-}
+import { Manga, Chapter, MangaContextType } from '@/types/manga';
+import { getMangasFromStorage, saveMangasToStorage } from '@/utils/storage';
 
 const MangaContext = createContext<MangaContextType | undefined>(undefined);
-
-// Storage key constant
-const STORAGE_KEY = 'mangascribe-mangas';
 
 export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mangas, setMangas] = useState<Manga[]>([]);
@@ -51,24 +12,15 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Load mangas from localStorage
   useEffect(() => {
-    // Load mangas from localStorage
-    const storedMangas = localStorage.getItem(STORAGE_KEY);
-    if (storedMangas) {
-      try {
-        const parsedMangas = JSON.parse(storedMangas);
-        console.log('Loading mangas from localStorage:', parsedMangas);
-        setMangas(parsedMangas);
-      } catch (error) {
-        console.error('Failed to parse stored mangas', error);
-        localStorage.removeItem(STORAGE_KEY);
-      }
+    const loadedMangas = getMangasFromStorage();
+    if (loadedMangas) {
+      setMangas(loadedMangas);
     }
   }, []);
 
   // Save mangas to localStorage whenever they change
   useEffect(() => {
-    console.log('Saving mangas to localStorage:', mangas);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(mangas));
+    saveMangasToStorage(mangas);
   }, [mangas]);
 
   const addManga = (manga: Omit<Manga, 'id' | 'createdAt' | 'updatedAt' | 'chapters'>) => {
@@ -85,8 +37,7 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     
     const updatedMangas = [...mangas, newManga];
     setMangas(updatedMangas);
-    // Make sure to save to localStorage right away
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMangas));
+    saveMangasToStorage(updatedMangas);
     
     toast({
       title: "Manga created",
@@ -95,12 +46,16 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const updateManga = (id: string, data: Partial<Manga>) => {
-    setMangas(prev => prev.map(manga => {
+    const updatedMangas = mangas.map(manga => {
       if (manga.id === id) {
         return { ...manga, ...data, updatedAt: new Date().toISOString() };
       }
       return manga;
-    }));
+    });
+    
+    setMangas(updatedMangas);
+    saveMangasToStorage(updatedMangas);
+    
     toast({
       title: "Manga updated",
       description: "Manga has been updated successfully",
@@ -108,7 +63,10 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const deleteManga = (id: string) => {
-    setMangas(prev => prev.filter(manga => manga.id !== id));
+    const updatedMangas = mangas.filter(manga => manga.id !== id);
+    setMangas(updatedMangas);
+    saveMangasToStorage(updatedMangas);
+    
     toast({
       title: "Manga deleted",
       description: "Manga has been deleted successfully",
@@ -144,8 +102,7 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
     
     setMangas(updatedMangas);
-    // Make sure to save to localStorage right away
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMangas));
+    saveMangasToStorage(updatedMangas);
     
     toast({
       title: "Chapter added",
@@ -154,7 +111,7 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const updateChapter = (mangaId: string, chapterId: string, data: Partial<Chapter>) => {
-    setMangas(prev => prev.map(manga => {
+    const updatedMangas = mangas.map(manga => {
       if (manga.id === mangaId) {
         return {
           ...manga,
@@ -168,7 +125,11 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         };
       }
       return manga;
-    }));
+    });
+    
+    setMangas(updatedMangas);
+    saveMangasToStorage(updatedMangas);
+    
     toast({
       title: "Chapter updated",
       description: "Chapter has been updated successfully",
@@ -176,7 +137,7 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const deleteChapter = (mangaId: string, chapterId: string) => {
-    setMangas(prev => prev.map(manga => {
+    const updatedMangas = mangas.map(manga => {
       if (manga.id === mangaId) {
         return {
           ...manga,
@@ -185,7 +146,11 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         };
       }
       return manga;
-    }));
+    });
+    
+    setMangas(updatedMangas);
+    saveMangasToStorage(updatedMangas);
+    
     toast({
       title: "Chapter deleted",
       description: "Chapter has been deleted successfully",
@@ -226,3 +191,5 @@ export const useManga = () => {
   }
   return context;
 };
+
+export type { Manga, Chapter };
