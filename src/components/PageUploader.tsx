@@ -80,12 +80,12 @@ const PageUploader = ({ pages, onChange, onUploadStateChange }: PageUploaderProp
       )}
 
       {pages.length > 0 ? (
-        <ScrollArea className="h-[400px] border border-gray-700 rounded-md p-2 scrollbar">
+        <ScrollArea className="h-[400px] border border-gray-700 rounded-md p-2 custom-scrollbar">
           <div className="space-y-3">
             {pages.map((page, index) => (
               <div 
                 key={index} 
-                className="flex items-center p-3 glass-card rounded-md border border-gray-700 transition-all hover:border-manga-accent/50 duration-300"
+                className="flex items-center p-3 neo-glass rounded-md border border-gray-700 transition-all hover:border-manga-accent/50 duration-300"
               >
                 <GripVertical size={16} className="mr-2 text-gray-500" />
                 <div className="w-16 h-16 relative overflow-hidden rounded-md mr-3 border border-gray-700">

@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Upload, Link, X } from "lucide-react";
+import { Upload, Link as LinkIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -90,7 +90,8 @@ const ImageUploader = ({ onImageSelected, className, defaultImage }: ImageUpload
             </div>
           </TabsContent>
           <TabsContent value="url">
-            <form onSubmit={handleUrlSubmit} className="space-y-4">
+            {/* Fix: Use div instead of form to avoid nesting forms */}
+            <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <Input
                   type="url"
@@ -99,12 +100,12 @@ const ImageUploader = ({ onImageSelected, className, defaultImage }: ImageUpload
                   onChange={(e) => setImageUrl(e.target.value)}
                   className="flex-1"
                 />
-                <Button type="submit">
-                  <Link size={16} className="mr-2" />
+                <Button type="button" onClick={handleUrlSubmit}>
+                  <LinkIcon size={16} className="mr-2" />
                   Add
                 </Button>
               </div>
-            </form>
+            </div>
           </TabsContent>
         </Tabs>
       )}
