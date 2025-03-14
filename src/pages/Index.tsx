@@ -8,6 +8,7 @@ import MangaGrid from '@/components/MangaGrid';
 
 const Index = () => {
   const { mangas } = useManga();
+  console.log("Index page mangas:", mangas);
   
   // Get the 6 most recent manga for the featured section
   const featuredMangas = [...mangas]

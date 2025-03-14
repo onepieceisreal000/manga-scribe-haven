@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { Manga } from "@/contexts/MangaContext";
+import { Manga } from "@/types/manga";
 import MangaCard from "./MangaCard";
 
 interface MangaGridProps {

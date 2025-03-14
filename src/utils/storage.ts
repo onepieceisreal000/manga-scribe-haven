@@ -4,10 +4,10 @@ import { Manga } from '@/types/manga';
 // Storage key constant
 const STORAGE_KEY = 'mangascribe-mangas';
 
-export const getMangasFromStorage = (): Manga[] | null => {
+export const getMangasFromStorage = (): Manga[] => {
   try {
     const storedMangas = localStorage.getItem(STORAGE_KEY);
-    if (!storedMangas) return null;
+    if (!storedMangas) return [];
     
     const parsedMangas = JSON.parse(storedMangas);
     console.log('Loading mangas from localStorage:', parsedMangas);
@@ -15,7 +15,7 @@ export const getMangasFromStorage = (): Manga[] | null => {
   } catch (error) {
     console.error('Failed to parse stored mangas', error);
     localStorage.removeItem(STORAGE_KEY);
-    return null;
+    return [];
   }
 };
 
@@ -24,7 +24,7 @@ export const saveMangasToStorage = (mangas: Manga[]): void => {
     console.log('Saving mangas to localStorage:', mangas);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(mangas));
     
-    // Dispatch a custom event to notify other tabs about the change
+    // Force a refresh to ensure other components know the storage has been updated
     window.dispatchEvent(new CustomEvent('manga-storage-updated'));
   } catch (error) {
     console.error('Failed to save mangas to localStorage', error);

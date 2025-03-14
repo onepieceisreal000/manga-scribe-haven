@@ -10,7 +10,10 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 
 const Home = () => {
+  // Use the MangaContext to get mangas
   const { mangas } = useManga();
+  console.log("Home page mangas:", mangas);
+  
   const location = useLocation();
   const [activeFilter, setActiveFilter] = useState<'all' | 'newest' | 'popular' | 'nsfw'>(
     location.search.includes('filter=newest') 

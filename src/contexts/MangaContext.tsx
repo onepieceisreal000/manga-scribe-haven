@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Manga, Chapter, MangaContextType } from '@/types/manga';
-import { getMangasFromStorage, saveMangasToStorage } from '@/utils/storage';
+import { getMangasFromStorage, saveMangasToStorage, setupStorageListener } from '@/utils/storage';
 
 const MangaContext = createContext<MangaContextType | undefined>(undefined);
 
@@ -12,16 +12,21 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Load mangas from localStorage
   useEffect(() => {
+    console.log("MangaProvider: Loading mangas from storage");
     const loadedMangas = getMangasFromStorage();
-    if (loadedMangas) {
-      setMangas(loadedMangas);
-    }
+    setMangas(loadedMangas);
+    
+    // Setup listener for storage changes
+    const cleanup = setupStorageListener((updatedMangas) => {
+      console.log("Storage updated, refreshing mangas:", updatedMangas);
+      setMangas(updatedMangas);
+    });
+    
+    return cleanup;
   }, []);
 
-  // Save mangas to localStorage whenever they change
-  useEffect(() => {
-    saveMangasToStorage(mangas);
-  }, [mangas]);
+  // We don't need to save mangas to localStorage on every change anymore
+  // because we're explicitly calling saveMangasToStorage in all our methods
 
   const addManga = (manga: Omit<Manga, 'id' | 'createdAt' | 'updatedAt' | 'chapters'>) => {
     const now = new Date().toISOString();
