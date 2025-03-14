@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 
@@ -18,6 +19,7 @@ export interface Manga {
   coverImage: string;
   genres: string[];
   status: 'ongoing' | 'completed';
+  isNsfw?: boolean; // New field for NSFW content
   chapters: Chapter[];
   createdAt: string;
   updatedAt: string;
@@ -40,26 +42,29 @@ interface MangaContextType {
 
 const MangaContext = createContext<MangaContextType | undefined>(undefined);
 
+// Storage key constant
+const STORAGE_KEY = 'mangascribe-mangas';
+
 export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mangas, setMangas] = useState<Manga[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
     // Load mangas from localStorage
-    const storedMangas = localStorage.getItem('mangas');
+    const storedMangas = localStorage.getItem(STORAGE_KEY);
     if (storedMangas) {
       try {
         setMangas(JSON.parse(storedMangas));
       } catch (error) {
         console.error('Failed to parse stored mangas', error);
-        localStorage.removeItem('mangas');
+        localStorage.removeItem(STORAGE_KEY);
       }
     }
   }, []);
 
   // Save mangas to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('mangas', JSON.stringify(mangas));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mangas));
   }, [mangas]);
 
   const addManga = (manga: Omit<Manga, 'id' | 'createdAt' | 'updatedAt' | 'chapters'>) => {

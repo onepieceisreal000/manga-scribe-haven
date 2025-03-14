@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useManga } from '@/contexts/MangaContext';
-import { BookOpen, Calendar, User, Clock } from 'lucide-react';
+import { BookOpen, Calendar, User, Clock, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
@@ -98,6 +98,14 @@ const MangaDetail = () => {
                   } text-white border-0`}>
                     {manga.status}
                   </Badge>
+                  
+                  {manga.isNsfw && (
+                    <Badge className="bg-gradient-to-r from-red-600 to-red-500 text-white border-0 flex items-center gap-1">
+                      <AlertTriangle size={12} />
+                      18+
+                    </Badge>
+                  )}
+                  
                   {manga.genres.map((genre, index) => (
                     <Badge key={index} variant="outline" className="border-white/20 bg-white/5">
                       {genre}

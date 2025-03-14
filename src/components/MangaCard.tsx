@@ -17,13 +17,19 @@ const MangaCard = ({ manga }: MangaCardProps) => {
             alt={manga.title}
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute top-2 right-2">
+          <div className="absolute top-2 right-2 flex flex-col gap-2">
             <Badge 
               variant="secondary" 
               className={`${manga.status === 'ongoing' ? 'bg-blue-600' : 'bg-green-600'} text-white`}
             >
               {manga.status}
             </Badge>
+            
+            {manga.isNsfw && (
+              <Badge variant="secondary" className="bg-red-600 text-white">
+                18+
+              </Badge>
+            )}
           </div>
         </div>
         <div className="p-3">

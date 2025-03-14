@@ -8,10 +8,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle } from 'lucide-react';
 import ImageUploader from '@/components/ImageUploader';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
 
 const GENRE_OPTIONS = [
   'Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 
@@ -29,6 +31,7 @@ const CreateManga = () => {
   const [coverImage, setCoverImage] = useState('');
   const [status, setStatus] = useState<'ongoing' | 'completed'>('ongoing');
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [isNsfw, setIsNsfw] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggleGenre = (genre: string) => {
@@ -58,6 +61,7 @@ const CreateManga = () => {
         coverImage,
         genres: selectedGenres,
         status,
+        isNsfw,
       });
       
       setIsSubmitting(false);
@@ -128,6 +132,26 @@ const CreateManga = () => {
                     <Label htmlFor="completed" className="cursor-pointer text-gray-300">Completed</Label>
                   </div>
                 </RadioGroup>
+              </div>
+              
+              {/* NSFW Toggle */}
+              <div className="space-y-3 neo-glass p-4 rounded-xl">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label className="text-gray-300 flex items-center">
+                      <AlertTriangle className="w-4 h-4 mr-2 text-red-400" />
+                      NSFW Content
+                    </Label>
+                    <p className="text-xs text-gray-400">
+                      Mark this manga as Not Safe For Work (18+)
+                    </p>
+                  </div>
+                  <Switch
+                    checked={isNsfw}
+                    onCheckedChange={setIsNsfw}
+                    className="data-[state=checked]:bg-red-500"
+                  />
+                </div>
               </div>
               
               <div className="space-y-3">
