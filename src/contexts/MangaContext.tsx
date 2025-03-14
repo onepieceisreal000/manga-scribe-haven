@@ -49,12 +49,15 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [mangas, setMangas] = useState<Manga[]>([]);
   const { toast } = useToast();
 
+  // Load mangas from localStorage
   useEffect(() => {
     // Load mangas from localStorage
     const storedMangas = localStorage.getItem(STORAGE_KEY);
     if (storedMangas) {
       try {
-        setMangas(JSON.parse(storedMangas));
+        const parsedMangas = JSON.parse(storedMangas);
+        console.log('Loading mangas from localStorage:', parsedMangas);
+        setMangas(parsedMangas);
       } catch (error) {
         console.error('Failed to parse stored mangas', error);
         localStorage.removeItem(STORAGE_KEY);
@@ -64,6 +67,7 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Save mangas to localStorage whenever they change
   useEffect(() => {
+    console.log('Saving mangas to localStorage:', mangas);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(mangas));
   }, [mangas]);
 
@@ -78,7 +82,12 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       views: 0,
       rating: 0
     };
-    setMangas(prev => [...prev, newManga]);
+    
+    const updatedMangas = [...mangas, newManga];
+    setMangas(updatedMangas);
+    // Make sure to save to localStorage right away
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMangas));
+    
     toast({
       title: "Manga created",
       description: `${manga.title} has been added successfully`,
@@ -123,7 +132,7 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       createdAt: new Date().toISOString(),
     };
 
-    setMangas(prev => prev.map(manga => {
+    const updatedMangas = mangas.map(manga => {
       if (manga.id === mangaId) {
         return {
           ...manga,
@@ -132,7 +141,12 @@ export const MangaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         };
       }
       return manga;
-    }));
+    });
+    
+    setMangas(updatedMangas);
+    // Make sure to save to localStorage right away
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMangas));
+    
     toast({
       title: "Chapter added",
       description: `Chapter ${chapter.number} has been added successfully`,

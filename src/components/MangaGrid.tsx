@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { Manga } from "@/contexts/MangaContext";
 import MangaCard from "./MangaCard";
 
@@ -8,7 +9,11 @@ interface MangaGridProps {
 }
 
 const MangaGrid = ({ mangas, title }: MangaGridProps) => {
-  if (mangas.length === 0) {
+  useEffect(() => {
+    console.log("MangaGrid received mangas:", mangas);
+  }, [mangas]);
+
+  if (!mangas || mangas.length === 0) {
     return (
       <div className="py-8 text-center">
         <h2 className="text-xl font-semibold mb-4">{title || "Manga Library"}</h2>
